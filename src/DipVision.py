@@ -2,7 +2,6 @@
 
 
 from object_detection import detect_objects
-from DipUnterFreunden.src.conf import INPUTPATH
 import conf
 import cv2.cv2 as cv2
 import os
@@ -55,14 +54,13 @@ class DipVision:
 			# initialize the color of the annotation
 			(startX, startY, endX, endY) = bbox
 	
-			# Set color depending on class: Normal Indy is green, faulty is red
-			if classId == 0:
-			# if classId == conf.labelsBallPlayer.index("player"):
-				color = conf.colorGreen
-			else:
-				color = conf.colorRed
+			# Set color depending on class: Normal Indy is green, faulty is red, orange, blue, etc.
+			color = conf.COLORS[classId]
 			# draw a bounding box around the object
 			cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+			# write the class name and certainty above the box
+			text = "{}: {:.4f}".format(conf.LABELS[classId], prob)
+			cv2.putText(frame, text, (startX, startY - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 
 	########################################################################
