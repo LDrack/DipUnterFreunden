@@ -12,14 +12,14 @@ import os.path
 # This is your Project Root
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MODELPATH = os.path.sep.join([ROOT_DIR, "model"])
+MODELPATH = os.path.sep.join([ROOT_DIR, "../model"])
 INPUTPATH = os.path.sep.join([ROOT_DIR, "input"])
 OUTPUTPATH = os.path.sep.join([ROOT_DIR, "output"])
 
 # Paths to numes, cfg and weights files
-labelsPath  = os.path.sep.join([MODELPATH, "indy.names"])
-configPath  = os.path.sep.join([MODELPATH, "indy.cfg"])
-weightsPath = os.path.sep.join([MODELPATH, "indy.weights"])
+labelsPath  = os.path.sep.join([MODELPATH, "indy1.names"])
+configPath  = os.path.sep.join([MODELPATH, "indy1.cfg"])
+weightsPath = os.path.sep.join([MODELPATH, "indy1.weights"])
 
 
 ##############################################################################

@@ -34,7 +34,7 @@ class DipVision:
 		# Determine only the *output* layer names that we need from YOLO
 		##################################################################################
 		self.ln = self.net.getLayerNames()
-		self.ln = [self.ln[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
+		self.ln = [self.ln[i - 1] for i in self.net.getUnconnectedOutLayers()]
 
      
 
@@ -100,7 +100,7 @@ class DipVision:
 			self.processFrame(img)
 		
 			# show the output frame
-			cv2.imshow(self.title, img)
+			cv2.imshow("DipVision", img)
 			if self.handleKeypress():
 				# User pressed q, so break from the loop
 				break
