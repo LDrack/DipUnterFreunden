@@ -1,8 +1,0 @@
-Normal
-NoHat
-NoFace
-NoLeg
-NoBodyPrint
-NoHand
-NoHead
-NoArm
