@@ -1,11 +1,9 @@
 # DIP unter Freunden.
 
-
 from object_detection import detect_objects
 import conf
-import cv2.cv2 as cv2
+import cv2
 import os
-# import imutils
 
 class DipVision:
 	args = None
@@ -17,12 +15,12 @@ class DipVision:
 	initBB = None
  
 	def init(self):
-		##################################################################################
+		########################################################################
 		# Load our YOLO object detector trained on custom dataset.
 		# This uses OpenCV as backend and uses the Darknet framework.
 		# Change the paths below to chose the desired AI model.
 		# If CUDA was enabled in conf.py, the AI will run on your GPU.
-		##################################################################################
+		########################################################################
 		print("[INFO] loading YOLO from disk...")
 		self.net = cv2.dnn.readNetFromDarknet(conf.configPath, conf.weightsPath)
 		if conf.USE_GPU:
@@ -30,11 +28,18 @@ class DipVision:
 			self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 			self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 		
-		##################################################################################
+		########################################################################
 		# Determine only the *output* layer names that we need from YOLO
-		##################################################################################
+		########################################################################
 		self.ln = self.net.getLayerNames()
 		self.ln = [self.ln[i - 1] for i in self.net.getUnconnectedOutLayers()]
+
+		########################################################################
+		# Flags determining how images are shown to user
+		########################################################################
+		self.automaticMode = False	# Images are shown like a slideshow (fast)
+		self.endMode = False		# Images are not shown, but results are
+									# processed until the end
 
      
 
@@ -65,24 +70,39 @@ class DipVision:
 
 	########################################################################
 	# Handles user input to quit, skip forwards/backwards with z and v keys
-	# Returns true if user pressed Q, else false
+	# A turns on automatic mode, which works like a slideshow.
+	# E turns on end mode, which skips visualization but processes all images
 	########################################################################
-	def handleKeypress(self):
-		key = cv2.waitKey(1) & 0xFF
+	def handleKeypress(self, i):
+		# Automatic mode does not wait for user keypress
+		if (self.automaticMode):
+			key = cv2.waitKey(1) & 0xFF
+			newI = i+1
+		else:
+			key = cv2.waitKey(0) & 0xFF
+			newI = i
+
 		if key == ord("q"):
-			# Break from the loop
-			return True
-		# elif key == ord("z"):
-		# 	# Z für Zukunft
-		# 	framenr = self.vs.get(cv2.CAP_PROP_POS_FRAMES)
-		# 	framenr = framenr + 1000
-		# 	self.vs.set(cv2.CAP_PROP_POS_FRAMES, framenr)
-		# elif key == ord("v"):
-		# 	# V für Vergangenheit
-		# 	framenr = self.vs.get(cv2.CAP_PROP_POS_FRAMES)
-		# 	framenr = (framenr - 1000) if framenr >= 1000 else 0
-		# 	self.vs.set(cv2.CAP_PROP_POS_FRAMES, framenr)
-		return False
+			# Q für Quittieren
+			newI = self.nOfImages
+		elif key == ord("z"):
+			# Z für Zukunft
+			newI = i+1
+			self.automaticMode = False
+		elif key == ord("v"):
+			# V für Vergangenheit
+			newI = max(0, i-1)
+			self.automaticMode = False
+		elif key == ord("a"):
+			# A für Automatik
+			newI = i+1
+			self.automaticMode = True
+		elif key == ord("e"):
+			# E für Ende
+			newI = i+1
+			self.endMode = True
+			cv2.destroyAllWindows()
+		return newI
 
 
 
@@ -91,21 +111,30 @@ class DipVision:
 	##################################################################################
 	def run(self):
 		# iterate through the names of contents of the folder
-		for img_filename in os.listdir(conf.INPUTPATH):
+		img_filenames = os.listdir(conf.INPUTPATH)
+		self.nOfImages = len(img_filenames)
+		i = 0
 
+		while i < self.nOfImages:
 			# create the full input path and read the image file
-			img_path = os.path.join(conf.INPUTPATH, img_filename)
+			img_path = os.path.join(conf.INPUTPATH, img_filenames[i])
 			img = cv2.imread(img_path)
 			
 			self.processFrame(img)
-		
-			# show the output frame
-			cv2.imshow("DipVision", img)
-			if self.handleKeypress():
-				# User pressed q, so break from the loop
-				break
-   
+
 			# TODO: save resulting image and data (number of defects, ect.)
+			# >>>>>>
+		
+
+
+			# If user pressed e, skip visualization and process all images immediately
+			# Otherwise, show the image and handle user input
+			if (self.endMode):
+				i = i+1
+			else:
+				cv2.imshow("DipVision", img)
+				i = self.handleKeypress(i)
+
 
 		cv2.destroyAllWindows()
 

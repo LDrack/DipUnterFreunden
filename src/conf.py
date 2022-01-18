@@ -38,14 +38,14 @@ objIdxAll = list(range(0, len(LABELS)))
 # Color constants for drawing with OpenCV (BGR)
 ##############################################################################
 COLORS = [
-(0, 255, 0),        # Normal        Green
-(0, 0, 255),        # NoHat         Red
-(255, 0, 0),        # NoFace        Blue
-(255, 255, 0),      # NoLeg         Cyan
+(153, 50, 204),     # NoArm         Purple
 (255, 0, 255),      # NoBodyPrint   Magenta
+(255, 0, 0),        # NoFace        Blue
 (0, 255, 255),      # NoHand        Yellow
-(255, 165, 0),      # NoHead        Orange
-(153, 50, 204)      # NoArm         Purple
+(0, 0, 255),        # NoHat         Red
+(255, 255, 255),    # NoHead        White
+(255, 255, 0),      # NoLeg         Cyan
+(0, 255, 0),        # Normal        Green
 ]
 
 # colorGreen    = (0, 255, 0),        # Normal        Green
@@ -56,14 +56,6 @@ COLORS = [
 # colorYellow   = (0, 255, 255),      # NoHand        Yellow
 # colorOrange   = (255, 165, 0),      # NoHead        Orange
 # colorPurple   = (153, 50, 204)      # NoArm         Purple
-
-
-##############################################################################
-# initialize minimum probability to filter weak detections along with
-# the threshold when applying non-maxima suppression
-##############################################################################
-MIN_CONF = 0.3
-NMS_THRESH = 0.3
 
 
 ##############################################################################
