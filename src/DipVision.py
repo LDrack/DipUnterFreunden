@@ -124,7 +124,8 @@ class DipVision:
 
 			# TODO: save resulting image and data (number of defects, ect.)
 			# >>>>>>
-		
+			img_output_path = os.path.join(conf.OUTPUTPATH, img_filenames[i])
+			cv2.imwrite(img_output_path, img)
 
 
 			# If user pressed e, skip visualization and process all images immediately
