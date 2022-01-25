@@ -5,6 +5,7 @@ import conf
 import cv2
 import os
 
+
 class DipVision:
 	args = None
 	net = None
@@ -32,7 +33,7 @@ class DipVision:
 		# Determine only the *output* layer names that we need from YOLO
 		########################################################################
 		self.ln = self.net.getLayerNames()
-		self.ln = [self.ln[i - 1] for i in self.net.getUnconnectedOutLayers()]
+		self.ln = [self.ln[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
 
 		########################################################################
 		# Flags determining how images are shown to user
@@ -124,7 +125,8 @@ class DipVision:
 
 			# TODO: save resulting image and data (number of defects, ect.)
 			# >>>>>>
-		
+			img_output_path = os.path.join(conf.OUTPUTPATH, img_filenames[i])
+			cv2.imwrite(img_output_path, img)
 
 
 			# If user pressed e, skip visualization and process all images immediately

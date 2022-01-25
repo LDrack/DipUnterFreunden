@@ -47,6 +47,8 @@ def detect_objects(frame, net, ln, objindex=[0]):
 			scores = detection[5:]
 			classID = np.argmax(scores)
 			confidence = scores[classID]
+			#if confidence > 0.0:
+				#print("Test")
 			# filter detections by (1) ensuring that the object
 			# detected was a person and (2) that the minimum
 			# confidence is met

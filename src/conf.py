@@ -19,7 +19,7 @@ OUTPUTPATH = os.path.sep.join([ROOT_DIR, "output"])
 # Paths to numes, cfg and weights files
 labelsPath  = os.path.sep.join([MODELPATH, "indy1.names"])
 configPath  = os.path.sep.join([MODELPATH, "indy1.cfg"])
-weightsPath = os.path.sep.join([MODELPATH, "indy1.weights"])
+weightsPath = os.path.sep.join([MODELPATH, "indy2.weights"])
 
 
 ##############################################################################
